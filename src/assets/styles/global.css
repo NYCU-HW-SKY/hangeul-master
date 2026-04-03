@@ -1,0 +1,432 @@
+/* ============================================================
+   韓文學習應用 - 全域樣式
+   Global Styles for Korean Learning App
+   ============================================================ */
+
+/* Editorial fonts (must be first @import) */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Lato:wght@300;400;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&display=swap');
+
+@import './variables.css';
+@import './animations.css';
+
+/* --------------------------------------------------------
+   字體載入 Font Loading
+   使用 CDN @font-face 載入字體
+   -------------------------------------------------------- */
+
+/* Pretendard Variable - 主要顯示字體 */
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.woff2')
+       format('woff2-variations');
+}
+
+/* Spoqa Han Sans Neo - 韓文正文字體 */
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 100;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Thin.woff2')
+       format('woff2');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Light.woff2')
+       format('woff2');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2')
+       format('woff2');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.woff2')
+       format('woff2');
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff2')
+       format('woff2');
+}
+
+/* Noto Sans TC - 繁體中文字體 (via Google Fonts) */
+/* Note: loaded via @import at top of global.css */
+
+/* --------------------------------------------------------
+   CSS Reset & Base Styles
+   -------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background: linear-gradient(
+    135deg,
+    #0d0f12 0%,
+    #1a1d24 50%,
+    #0d0f12 100%
+  );
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(159, 197, 232, 0.02) 100px,
+      rgba(159, 197, 232, 0.02) 200px
+    );
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------
+   排版 Typography
+   -------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--text-5xl); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-3xl); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+h6 { font-size: var(--text-lg); }
+
+p {
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* 韓文文字 Korean Text */
+.text-korean {
+  font-family: var(--font-korean);
+  word-break: keep-all;
+}
+
+/* 中文文字 Chinese Text */
+.text-chinese {
+  font-family: var(--font-chinese);
+  word-break: break-all;
+}
+
+/* --------------------------------------------------------
+   互動元素 Interactive Elements
+   -------------------------------------------------------- */
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --------------------------------------------------------
+   焦點樣式 Focus Styles (無障礙)
+   -------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* --------------------------------------------------------
+   捲軸樣式 Scrollbar Styles
+   -------------------------------------------------------- */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-divider);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* --------------------------------------------------------
+   佈局工具類別 Layout Utilities
+   -------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: var(--space-8);
+  }
+}
+
+/* --------------------------------------------------------
+   過渡效果工具類別 Transition Utilities
+   -------------------------------------------------------- */
+
+.transition-base {
+  transition: var(--transition-base);
+}
+
+.transition-colors {
+  transition: var(--transition-colors);
+}
+
+.transition-transform {
+  transition: var(--transition-transform);
+}
+
+/* --------------------------------------------------------
+   懸停效果 Hover States
+   -------------------------------------------------------- */
+
+.hover-lift {
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out);
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.hover-scale {
+  transition: transform var(--duration-base) var(--ease-epic);
+  will-change: transform;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* --------------------------------------------------------
+   符文裝飾工具類 Rune Decoration Utilities - 戰神風格
+   -------------------------------------------------------- */
+
+.rune-corner-tl::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+}
+
+.rune-corner-tr::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
+}
+
+.rune-corners::before,
+.rune-corners::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+}
+
+.rune-corners::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.rune-corners::after {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+/* --------------------------------------------------------
+   視覺隱藏 (無障礙) Visually Hidden
+   -------------------------------------------------------- */
+
+.card {
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+  opacity: 0.6;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
+  opacity: 0.6;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+
+/* --------------------------------------------------------
+   視覺隱藏 (無障礙) Visually Hidden
+   -------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* --------------------------------------------------------
+   頁面載入動畫 Page Load Animations
+   -------------------------------------------------------- */
+
+.page-hero {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) both;
+}
+
+.page-card-1 {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) 100ms both;
+}
+
+.page-card-2 {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) 200ms both;
+}
+
+.page-card-3 {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) 300ms both;
+}
+
+.page-card-4 {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) 400ms both;
+}

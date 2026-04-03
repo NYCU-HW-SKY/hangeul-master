@@ -1,0 +1,184 @@
+/* ============================================================
+   韓文學習應用 - 設計 Token 系統
+   Design Token System for Korean Learning App
+   ============================================================ */
+
+:root {
+  /* --------------------------------------------------------
+     字體系統 Font System - 戰神風格
+     -------------------------------------------------------- */
+  --font-display: 'Cinzel', 'Noto Serif TC', serif;
+  --font-body: 'Lato', 'Noto Sans TC', sans-serif;
+  --font-korean: 'Spoqa Han Sans Neo', sans-serif;
+  --font-chinese: 'Noto Sans TC', sans-serif;
+
+  /* 字體大小階層 Font Size Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+
+  /* 字重 Font Weight */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+
+  /* 行高 Line Height */
+  --leading-tight: 1.15;
+  --leading-snug: 1.375;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.75;
+  --leading-loose: 2;
+
+  /* --------------------------------------------------------
+     配色系統 Color System - 戰神風格 (God of War)
+     -------------------------------------------------------- */
+
+  /* 主色調 - 冰霜藍 Frost Blue */
+  --color-primary: #9fc5e8;
+  --color-primary-light: #c5dff8;
+  --color-primary-dark: #6fa8dc;
+  --color-primary-glow: rgba(159, 197, 232, 0.25);
+
+  /* 強調色 - 戰神紅 War Red */
+  --color-accent: #c1440e;
+  --color-accent-light: #e06c3a;
+  --color-accent-dark: #8b2f0a;
+  --color-accent-glow: rgba(193, 68, 14, 0.3);
+
+  /* 次要色 - 符文金 Rune Gold */
+  --color-secondary: #d4af37;
+  --color-secondary-light: #f4d03f;
+  --color-secondary-dark: #b8941f;
+
+  /* 輔助色 Semantic Colors */
+  --color-success: #7cb342;
+  --color-warning: #d4af37;
+  --color-error: #c1440e;
+
+  /* 中性色 - 北歐石灰 Nordic Stone */
+  --color-background: #0d0f12;
+  --color-background-alt: #1a1d23;
+  --color-surface: #1e2329;
+  --color-surface-elevated: #282d35;
+  --color-surface-glass: rgba(30, 35, 41, 0.9);
+
+  /* 文字色 Text Colors */
+  --color-text-primary: #e8e6e3;
+  --color-text-secondary: #b8b5b2;
+  --color-text-tertiary: #6b6866;
+  --color-text-inverse: #0d0f12;
+
+  /* 邊框與分隔 Border & Divider */
+  --color-border: #3a3f47;
+  --color-divider: #2a2f35;
+
+  /* 漸變色 Gradients */
+  --gradient-primary: linear-gradient(135deg, #6fa8dc 0%, #9fc5e8 100%);
+  --gradient-accent: linear-gradient(135deg, #c1440e 0%, #e06c3a 100%);
+  --gradient-hero: linear-gradient(180deg, rgba(13, 15, 18, 0) 0%, #0d0f12 100%);
+  --gradient-card: linear-gradient(135deg, rgba(159, 197, 232, 0.03) 0%, rgba(193, 68, 14, 0.03) 100%);
+
+  /* --------------------------------------------------------
+     陰影系統 Shadow System - 深邃陰影
+     -------------------------------------------------------- */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.85);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 4px 24px var(--color-primary-glow);
+  --shadow-glow-accent: 0 4px 24px var(--color-accent-glow);
+  --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+
+  /* --------------------------------------------------------
+     間距系統 Spacing System (4px grid)
+     -------------------------------------------------------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* 容器寬度 Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+
+  /* --------------------------------------------------------
+     圓角系統 Border Radius System - 戰神風格（克制的圓角）
+     -------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
+
+  /* --------------------------------------------------------
+     動畫系統 Animation System
+     -------------------------------------------------------- */
+
+  /* 動畫時長 Duration - 戰神風格（緩慢而有力）*/
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-epic: 800ms;
+
+  /* 緩動函數 Easing */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-epic: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* 過渡效果 Transitions */
+  --transition-base: all var(--duration-base) var(--ease-out);
+  --transition-colors: color var(--duration-base) var(--ease-out),
+                       background-color var(--duration-base) var(--ease-out),
+                       border-color var(--duration-base) var(--ease-out);
+  --transition-transform: transform var(--duration-base) var(--ease-out);
+
+  /* --------------------------------------------------------
+     斷點系統 Breakpoint System
+     -------------------------------------------------------- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Editorial layout helpers */
+  --measure: 62ch;
+  --rule-thin: 1px;
+  --rule-strong: 2px;
+  --space-editorial: clamp(2.5rem, 5vw, 5rem);
+
+  /* --------------------------------------------------------
+     Z-index 層級 Z-index Scale
+     -------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
