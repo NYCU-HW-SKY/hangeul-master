@@ -6,10 +6,6 @@ export interface Flashcard {
   category: string;
   difficulty?: 1 | 2 | 3;
   tags?: string[];
-  example?: string;
-  exampleTranslation?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Category {
@@ -26,5 +22,4 @@ export interface VocabularyData {
   version: string;
   categories: Category[];
   flashcards: Flashcard[];
-  lastUpdated: Date;
 }

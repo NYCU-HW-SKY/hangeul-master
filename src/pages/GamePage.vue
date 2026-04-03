@@ -227,11 +227,6 @@ const completionStats = ref({
   pairs: 0,
 });
 const selectedLevel = ref<'easy' | 'normal' | 'hard'>('normal');
-const levelOptions = [
-  { value: 'easy' as const, label: '簡單 (4組)' },
-  { value: 'normal' as const, label: '一般 (6組)' },
-  { value: 'hard' as const, label: '困難 (8組)' },
-];
 const PAIRS_PER_LEVEL: Record<'easy' | 'normal' | 'hard', number> = {
   easy: 4,
   normal: 6,
@@ -362,12 +357,6 @@ const handleLevelChange = (level: 'easy' | 'normal' | 'hard') => {
   if (!showCategoryGrid.value) {
     handleRestart();
   }
-};
-
-const handleCategoryChange = (categoryId: string) => {
-  if (vocabularyStore.currentCategory === categoryId) return;
-  vocabularyStore.setCategory(categoryId);
-  handleRestart();
 };
 
 const handleBackToHome = () => {
