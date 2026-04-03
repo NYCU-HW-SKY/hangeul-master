@@ -126,7 +126,6 @@ export const useLearningModeStore = defineStore('learningMode', () => {
         korean: correctVocabulary.korean,
         chinese: correctVocabulary.chinese,
         romanization: correctVocabulary.romanization,
-        audioUrl: correctVocabulary.audioUrl,
         category: correctVocabulary.category,
       },
     };

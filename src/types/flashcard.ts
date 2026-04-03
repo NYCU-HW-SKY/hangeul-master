@@ -3,10 +3,11 @@ export interface Flashcard {
   korean: string;
   chinese: string;
   romanization?: string;
-  audioUrl: string;
   category: string;
   difficulty?: 1 | 2 | 3;
   tags?: string[];
+  example?: string;
+  exampleTranslation?: string;
   createdAt: Date;
   updatedAt: Date;
 }

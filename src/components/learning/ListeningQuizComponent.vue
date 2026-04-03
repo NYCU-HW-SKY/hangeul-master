@@ -63,6 +63,7 @@
         <button
           v-for="(option, index) in currentQuestion.options"
           :key="option.id"
+          v-memo="[option.id, selectedAnswer === option.text, isAnswerRevealed, option.isCorrect]"
           class="quiz-option"
           :class="{
             'is-selected': selectedAnswer === option.text,

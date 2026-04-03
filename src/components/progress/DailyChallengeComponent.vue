@@ -116,7 +116,7 @@
           <div class="celebration-icon">◈</div>
           <div class="celebration-text">挑戰完成！</div>
           <div class="runes">
-            <div v-for="i in 12" :key="i" class="rune-piece" :style="getRuneStyle(i)">◈</div>
+            <div v-for="i in 8" :key="i" class="rune-piece" :style="getRuneStyle(i)">◈</div>
           </div>
         </div>
       </div>
@@ -318,35 +318,11 @@ onMounted(() => {
 .daily-challenge {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  padding: var(--space-6);
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  max-width: 600px;
+  gap: var(--space-4);
   width: 100%;
-  position: relative;
 }
 
-/* Rune decorations at corners */
-.daily-challenge::before,
-.daily-challenge::after {
-  content: '◈';
-  position: absolute;
-  top: var(--space-4);
-  color: var(--color-primary);
-  font-size: var(--text-lg);
-  opacity: 0.7;
-}
-
-.daily-challenge::before {
-  left: var(--space-4);
-}
-
-.daily-challenge::after {
-  right: var(--space-4);
-}
+/* Rune decorations removed */
 
 /* --------------------------------------------------------
    Streak Display
@@ -356,12 +332,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-5);
-  background: linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
-  border: 2px solid var(--color-border);
+  padding: var(--space-4);
+  background: var(--color-background-alt);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  position: relative;
+  border-left: 3px solid var(--color-secondary);
 }
 
 .streak-icon {
@@ -446,12 +420,11 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4);
-  background-color: var(--color-surface-elevated);
+  padding: var(--space-3);
+  background-color: var(--color-background-alt);
   border-radius: var(--radius-md);
-  border: 2px solid var(--color-border);
+  border: 1px solid var(--color-border);
   transition: all var(--duration-base) var(--ease-out);
-  box-shadow: var(--shadow-sm);
 }
 
 .calendar-day.today {
@@ -527,29 +500,27 @@ onMounted(() => {
 .challenge-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-6);
-  background: linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
-  border: 2px solid var(--color-border);
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-background-alt);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  border-left: 3px solid var(--color-primary);
 }
 
 .challenge-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-divider);
 }
 
 .challenge-title {
-  font-size: var(--text-2xl);
+  font-size: var(--text-lg);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
   margin: 0;
   font-family: var(--font-display);
-  letter-spacing: 0.02em;
 }
 
 .challenge-date {
@@ -565,8 +536,8 @@ onMounted(() => {
 
 .challenge-progress {
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
 }
 
@@ -609,12 +580,11 @@ onMounted(() => {
 }
 
 .progress-value {
-  font-size: var(--text-4xl);
+  font-size: var(--text-3xl);
   font-weight: var(--font-black);
   color: var(--color-primary);
   font-family: var(--font-display);
   line-height: 1;
-  text-shadow: 0 0 20px rgba(111, 168, 220, 0.5);
 }
 
 .progress-label {
@@ -665,10 +635,9 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-4);
-  background-color: rgba(249, 251, 250, 0.9);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(149, 164, 184, 0.16);
+  padding: var(--space-3);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
 }
 
 .preview-label {
@@ -875,18 +844,13 @@ onMounted(() => {
 /* Mobile (≤640px) */
 @media (max-width: 640px) {
   .daily-challenge {
-    padding: var(--space-4);
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
   .streak-container {
-    padding: var(--space-4);
+    padding: var(--space-3);
     flex-direction: column;
     text-align: center;
-  }
-
-  .streak-icon {
-    font-size: var(--text-4xl);
   }
 
   .streak-number {
@@ -914,12 +878,12 @@ onMounted(() => {
   }
 
   .challenge-card {
-    padding: var(--space-4);
+    padding: var(--space-3);
     gap: var(--space-3);
   }
 
   .challenge-title {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
   }
 
   .challenge-progress {
@@ -932,20 +896,11 @@ onMounted(() => {
   }
 
   .card-preview {
-    padding: var(--space-3);
+    padding: var(--space-2);
   }
 
   .preview-count {
     font-size: var(--text-xl);
-  }
-
-  .celebration-content {
-    padding: var(--space-6);
-    margin: var(--space-4);
-  }
-
-  .celebration-text {
-    font-size: var(--text-2xl);
   }
 }
 
@@ -967,12 +922,11 @@ onMounted(() => {
 /* Desktop (≥1024px) */
 @media (min-width: 1024px) {
   .daily-challenge {
-    padding: var(--space-8);
-    gap: var(--space-8);
+    gap: var(--space-5);
   }
 
   .streak-container {
-    padding: var(--space-6);
+    padding: var(--space-5);
   }
 
   .calendar-grid {
@@ -980,21 +934,21 @@ onMounted(() => {
   }
 
   .calendar-day {
-    padding: var(--space-4);
+    padding: var(--space-3);
   }
 
   .challenge-card {
-    padding: var(--space-6);
-    gap: var(--space-5);
+    padding: var(--space-5);
+    gap: var(--space-4);
   }
 
   .challenge-progress {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
   }
 
   .progress-value {
-    font-size: var(--text-4xl);
+    font-size: var(--text-3xl);
   }
 }
 

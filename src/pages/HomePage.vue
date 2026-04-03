@@ -32,9 +32,9 @@
     <section class="hero">
       <div class="hero-ornament">⟨ 開始旅程 ⟩</div>
       <h2 class="hero-title">
-        <span class="title-line">掌握</span>
-        <span class="title-line title-highlight">韓文</span>
-        <span class="title-line">語言</span>
+        <span class="title-line">MASTER</span>
+        <span class="title-line title-highlight">KOREAN</span>
+        <span class="title-line">LANGUAGE</span>
       </h2>
       <p class="hero-subtitle">透過互動式學習、挑戰與進度追蹤，踏上語言精通之路</p>
       <ButtonComponent 

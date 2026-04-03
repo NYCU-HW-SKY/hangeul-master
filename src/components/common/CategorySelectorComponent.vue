@@ -8,6 +8,7 @@
       <button
         v-for="category in categories"
         :key="category.id"
+        v-memo="[category.id, currentCategory === category.id]"
         class="category-card"
         :class="{ 'is-active': category.id === currentCategory }"
         @click="handleSelect(category.id)"

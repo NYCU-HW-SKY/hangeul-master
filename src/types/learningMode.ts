@@ -101,6 +101,13 @@ export interface VocabularyItem {
   korean: string;
   chinese: string;
   romanization?: string;
-  audioUrl?: string;
+  category: string;
+}
+
+export interface ListeningQuizQuestion {
+  id: string;
+  korean: string;
+  chinese: string;
+  romanization?: string;
   category: string;
 }

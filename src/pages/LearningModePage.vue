@@ -233,6 +233,32 @@ function handleExitToSelection() {
   min-height: 100vh;
   padding: var(--space-8) var(--space-6);
   background: var(--color-background);
+  position: relative;
+}
+
+.learning-mode-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(212, 175, 55, 0.03) 2px,
+      rgba(212, 175, 55, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(212, 175, 55, 0.03) 2px,
+      rgba(212, 175, 55, 0.03) 4px
+    );
+  background-size: 100px 100px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
 }
 
 /* --------------------------------------------------------
@@ -253,19 +279,54 @@ function handleExitToSelection() {
 .page-title {
   font-size: var(--text-5xl);
   font-family: var(--font-display);
-  font-weight: var(--font-black);
+  font-weight: 900;
   color: var(--color-text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
   margin-bottom: var(--space-4);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+.page-title::before,
+.page-title::after {
+  content: '◈';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-secondary);
+  font-size: 0.4em;
+  opacity: 0.6;
+}
+
+.page-title::before {
+  left: -1.5em;
+}
+
+.page-title::after {
+  right: -1.5em;
 }
 
 .page-subtitle {
   font-size: var(--text-xl);
   font-family: var(--font-display);
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold);
   color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
+  position: relative;
+  padding-top: var(--space-4);
+}
+
+.page-subtitle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
 }
 
 /* --------------------------------------------------------
@@ -286,24 +347,83 @@ function handleExitToSelection() {
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-8);
-  background: var(--color-surface-elevated);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-lg);
-  transition: all var(--duration-base) var(--ease-out);
+  background: linear-gradient(135deg, rgba(30, 35, 41, 0.95) 0%, rgba(26, 29, 35, 0.95) 100%);
+  border-radius: 0;
+  border: 3px solid var(--color-border);
+  border-left: 4px solid var(--color-secondary);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(212, 175, 55, 0.1);
+  transition: all 500ms var(--ease-out);
   cursor: pointer;
   text-align: center;
   will-change: transform;
+  overflow: visible;
+}
+
+.mode-card::before,
+.mode-card::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-secondary);
+  opacity: 0.4;
+  transition: all 500ms var(--ease-out);
+}
+
+.mode-card::before {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.mode-card::after {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+.mode-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--color-secondary);
+  border-left-color: var(--color-secondary);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(212, 175, 55, 0.4),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2);
+}
+
+.mode-card:hover::before,
+.mode-card:hover::after {
+  opacity: 1;
+  border-color: var(--color-secondary);
+}
+
+.mode-card:hover::before {
+  width: 30px;
+  height: 30px;
+  top: -3px;
+  left: -3px;
+}
+
+.mode-card:hover::after {
+  width: 30px;
+  height: 30px;
+  bottom: -3px;
+  right: -3px;
 }
 
 .mode-card:active {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .mode-card:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 3px;
-  box-shadow: var(--shadow-2xl), 0 0 0 3px rgba(159, 197, 232, 0.3);
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 4px;
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.9),
+    0 0 0 3px rgba(212, 175, 55, 0.5);
 }
 
 .mode-icon {
@@ -314,10 +434,12 @@ function handleExitToSelection() {
 .mode-title {
   font-size: var(--text-2xl);
   font-family: var(--font-display);
-  font-weight: var(--font-bold);
+  font-weight: 900;
   color: var(--color-text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
   margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .mode-description {
@@ -330,15 +452,39 @@ function handleExitToSelection() {
 
 .mode-badge {
   display: inline-block;
-  padding: var(--space-2) var(--space-4);
-  background: var(--gradient-primary);
-  color: var(--color-text-primary);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-5);
+  background: linear-gradient(135deg, var(--color-secondary-dark), var(--color-secondary));
+  color: var(--color-text-inverse);
+  border-radius: 0;
+  border: 2px solid var(--color-secondary-dark);
+  font-size: var(--text-xs);
   font-family: var(--font-display);
-  font-weight: var(--font-semibold);
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.mode-badge::before,
+.mode-badge::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--color-secondary-light);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.mode-badge::before {
+  left: var(--space-2);
+}
+
+.mode-badge::after {
+  right: var(--space-2);
 }
 
 /* --------------------------------------------------------
@@ -358,8 +504,20 @@ function handleExitToSelection() {
   align-items: center;
   gap: var(--space-4);
   margin-bottom: var(--space-8);
-  padding-bottom: var(--space-4);
-  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--space-6);
+  border-bottom: 3px solid var(--color-border);
+  position: relative;
+}
+
+.quiz-header::after,
+.matching-header::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-secondary), transparent);
 }
 
 .back-button {
@@ -367,27 +525,51 @@ function handleExitToSelection() {
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-5);
-  background: var(--color-surface-elevated);
-  color: var(--color-text-primary);
-  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(30, 35, 41, 0.95) 0%, rgba(26, 29, 35, 0.95) 100%);
+  color: var(--color-secondary);
+  border-radius: 0;
   font-size: var(--text-base);
   font-family: var(--font-display);
-  font-weight: var(--font-semibold);
-  border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-base) var(--ease-out);
+  font-weight: 900;
+  border: 3px solid var(--color-border);
+  border-left: 4px solid var(--color-secondary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+  transition: all 500ms var(--ease-out);
   cursor: pointer;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.back-button::before {
+  content: '◀';
+  position: absolute;
+  left: var(--space-2);
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+  opacity: 0.6;
+}
+
+.back-button:hover {
+  transform: translateX(-4px);
+  border-color: var(--color-secondary);
+  border-left-color: var(--color-secondary);
+  color: var(--color-text-primary);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(212, 175, 55, 0.3);
 }
 
 .back-button:active {
-  transform: translateY(0);
+  transform: translateX(-2px);
 }
 
 .back-button:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 3px;
-  box-shadow: var(--shadow-lg), 0 0 0 3px rgba(159, 197, 232, 0.3);
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 4px;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.9),
+    0 0 0 3px rgba(212, 175, 55, 0.5);
 }
 
 .back-button svg {
@@ -399,9 +581,24 @@ function handleExitToSelection() {
 .matching-title {
   font-size: var(--text-3xl);
   font-family: var(--font-display);
-  font-weight: var(--font-bold);
+  font-weight: 900;
   color: var(--color-text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  position: relative;
+  padding-left: var(--space-6);
+}
+
+.quiz-title::before,
+.matching-title::before {
+  content: '◈';
+  position: absolute;
+  left: 0;
+  color: var(--color-secondary);
+  font-size: 0.6em;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* --------------------------------------------------------

@@ -19,51 +19,55 @@
 
     <!-- Main Content -->
     <main class="progress-content">
-      <!-- Overall Progress Section -->
-      <section class="progress-section">
+      <!-- Two Column Layout -->
+      <div class="content-grid">
+        <!-- Daily Challenge Section -->
+        <section class="content-card">
+          <h2 class="card-title">每日挑戰</h2>
+          <DailyChallengeComponent
+            :challenge="todayChallenge"
+            :streak="currentStreak"
+            :longest-streak="longestStreak"
+          />
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="content-card">
+          <h2 class="card-title">成就徽章</h2>
+          <div class="achievements-grid">
+            <AchievementBadgeComponent
+              v-for="achievement in achievements"
+              :key="achievement.id"
+              v-memo="[achievement.id, getUserAchievement(achievement.id)?.unlockedAt]"
+              :achievement="achievement"
+              :user-achievement="getUserAchievement(achievement.id)"
+              size="large"
+            />
+          </div>
+          
+          <div v-if="achievements.length === 0" class="empty-state">
+            <div class="empty-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+              </svg>
+            </div>
+            <p class="empty-text">尚未有成就資料</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Overall Progress Section (Bottom) -->
+      <section class="progress-overview">
         <ProgressTrackerComponent
           :category-progress="categoryProgress"
           :total-studied="totalStudied"
           :total-cards="totalCards"
         />
-      </section>
-
-      <!-- Daily Challenge Section -->
-      <section class="progress-section">
-        <h2 class="section-title">每日挑戰</h2>
-        <DailyChallengeComponent
-          :challenge="todayChallenge"
-          :streak="currentStreak"
-          :longest-streak="longestStreak"
-        />
-      </section>
-
-      <!-- Achievements Section -->
-      <section class="progress-section">
-        <h2 class="section-title">成就徽章</h2>
-        <div class="achievements-grid">
-          <AchievementBadgeComponent
-            v-for="achievement in achievements"
-            :key="achievement.id"
-            :achievement="achievement"
-            :user-achievement="getUserAchievement(achievement.id)"
-            size="large"
-          />
-        </div>
-        
-        <div v-if="achievements.length === 0" class="empty-state">
-          <div class="empty-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
-              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
-              <path d="M4 22h16"/>
-              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
-              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
-              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
-            </svg>
-          </div>
-          <p class="empty-text">尚未有成就資料</p>
-        </div>
       </section>
     </main>
   </div>
@@ -188,31 +192,44 @@ onMounted(() => {
 
 .progress-content {
   flex: 1;
-  max-width: var(--container-lg);
+  max-width: var(--container-xl);
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-6) var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-}
-
-.progress-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: var(--space-6);
 }
 
-.section-title {
-  font-size: var(--text-2xl);
+.progress-overview {
+  width: 100%;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.content-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
   margin: 0;
-  align-self: flex-start;
-  width: 100%;
-  padding-bottom: var(--space-2);
-  border-bottom: var(--rule-thin) solid var(--color-border);
+  letter-spacing: 0.02em;
 }
 
 /* --------------------------------------------------------
@@ -221,8 +238,8 @@ onMounted(() => {
 
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-4);
   width: 100%;
   justify-items: center;
 }
@@ -231,31 +248,18 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-16);
-  background: var(--gradient-card);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--color-border);
+  gap: var(--space-3);
+  padding: var(--space-10);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-md);
   width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.empty-state::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gradient-primary);
 }
 
 .empty-icon {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   color: var(--color-text-tertiary);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .empty-icon svg {
@@ -264,7 +268,7 @@ onMounted(() => {
 }
 
 .empty-text {
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   color: var(--color-text-secondary);
   margin: 0;
 }
@@ -293,29 +297,35 @@ onMounted(() => {
   }
 
   .progress-content {
-    padding: var(--space-6) var(--space-4);
-    gap: var(--space-8);
-  }
-
-  .section-title {
-    font-size: var(--text-xl);
-  }
-
-  .achievements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    padding: var(--space-4);
     gap: var(--space-4);
   }
 
+  .content-grid {
+    gap: var(--space-4);
+  }
+
+  .content-card {
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .card-title {
+    font-size: var(--text-lg);
+  }
+
+  .achievements-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: var(--space-3);
+  }
+
   .empty-state {
-    padding: var(--space-10);
+    padding: var(--space-8);
   }
 
   .empty-icon {
-    font-size: var(--text-4xl);
-  }
-
-  .empty-text {
-    font-size: var(--text-sm);
+    width: 48px;
+    height: 48px;
   }
 }
 
@@ -326,59 +336,72 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
   }
 
   .progress-content {
-    padding: var(--space-8) var(--space-6);
-    gap: var(--space-10);
+    padding: var(--space-6);
+    gap: var(--space-6);
   }
 
-  .section-title {
-    font-size: var(--text-2xl);
+  .content-grid {
+    gap: var(--space-6);
+  }
+
+  .content-card {
+    padding: var(--space-5);
+  }
+
+  .card-title {
+    font-size: var(--text-xl);
   }
 
   .achievements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: var(--space-4);
   }
 }
 
 /* Desktop (≥1024px) */
 @media (min-width: 1024px) {
   .progress-header {
-    padding: var(--space-5) var(--space-8);
+    padding: var(--space-4) var(--space-8);
   }
 
   .back-button {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
   }
 
   .page-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
 
   .header-spacer {
-    width: 48px;
+    width: 44px;
   }
 
   .progress-content {
-    padding: var(--space-10) var(--space-8);
-    gap: var(--space-16);
-  }
-
-  .section-title {
-    font-size: var(--text-3xl);
-  }
-
-  .achievements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: var(--space-8);
     gap: var(--space-8);
   }
 
-  .empty-state {
-    padding: var(--space-16);
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  .content-card {
+    padding: var(--space-6);
+  }
+
+  .card-title {
+    font-size: var(--text-2xl);
+  }
+
+  .achievements-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--space-5);
   }
 }
 

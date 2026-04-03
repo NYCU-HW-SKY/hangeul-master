@@ -31,6 +31,7 @@
             <div
               v-for="(item, index) in koreanItems"
               :key="item.id"
+              v-memo="[item.id, item.isMatched, draggedItem?.id === item.id, dragOverItem?.id === item.id, selectedKoreanItem?.id === item.id]"
               :data-id="item.id"
               class="match-item korean-item"
               :class="{
@@ -70,6 +71,7 @@
             <div
               v-for="(item, index) in chineseItems"
               :key="item.id"
+              v-memo="[item.id, item.isMatched, draggedItem?.id, dragOverItem?.id === item.id, selectedChineseItem?.id === item.id]"
               :data-id="item.id"
               class="match-item chinese-item"
               :class="{

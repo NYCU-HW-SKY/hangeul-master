@@ -10,29 +10,6 @@
       @keydown.enter="handleFlip"
       @keydown.space.prevent="handleFlip"
     >
-      <!-- Audio Button -->
-      <button
-        v-if="showAudioButton && audioUrl"
-        class="audio-button"
-        @click.stop="handlePlayAudio"
-        :aria-label="`播放 ${korean} 的發音`"
-        type="button"
-      >
-        <svg 
-          class="audio-icon" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M11 5L6 9H2v6h4l5 4V5z" />
-          <path d="M15.54 8.46a5 5 0 010 7.07" />
-          <path d="M19.07 4.93a10 10 0 010 14.14" />
-        </svg>
-        <span class="ripple"></span>
-      </button>
-
       <!-- Card Inner Container (for 3D flip) -->
       <div class="flashcard-inner">
         <!-- Front Side (Korean) -->
@@ -43,36 +20,19 @@
           </div>
         </div>
 
-        <!-- Back Side (Chinese) -->
+        <!-- Back Side (Chinese + Example) -->
         <div class="flashcard-face flashcard-back">
           <div class="card-content">
             <span class="category-badge">{{ category }}</span>
             <p class="chinese-text text-chinese">{{ chinese }}</p>
+            <div v-if="example" class="example-section">
+              <p class="example-text text-korean">{{ example }}</p>
+              <p class="example-translation text-chinese">{{ exampleTranslation }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Study Button (below card) -->
-    <button
-      class="study-button"
-      :class="{ 'is-studied': isStudied }"
-      @click="handleStudied"
-      :aria-label="isStudied ? `${korean} 已標記為已學習` : `標記 ${korean} 為已學習`"
-      type="button"
-    >
-      <svg 
-        class="check-icon" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="2.5"
-        aria-hidden="true"
-      >
-        <polyline points="20 6 9 17 4 12" />
-      </svg>
-      <span>{{ isStudied ? '✓ 已學習' : '標記已學習' }}</span>
-    </button>
   </div>
 </template>
 
@@ -80,38 +40,28 @@
 interface Props {
   korean: string;
   chinese: string;
-  audioUrl?: string;
   category: string;
   isFlipped?: boolean;
-  showAudioButton?: boolean;
   isStudied?: boolean;
+  example?: string;
+  exampleTranslation?: string;
 }
 
 interface Emits {
   (e: 'flip'): void;
-  (e: 'playAudio'): void;
-  (e: 'studied'): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  audioUrl: '',
   isFlipped: false,
-  showAudioButton: true,
   isStudied: false,
+  example: '',
+  exampleTranslation: '',
 });
 
 const emit = defineEmits<Emits>();
 
 const handleFlip = () => {
   emit('flip');
-};
-
-const handlePlayAudio = () => {
-  emit('playAudio');
-};
-
-const handleStudied = () => {
-  emit('studied');
 };
 </script>
 
@@ -120,7 +70,6 @@ const handleStudied = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-6);
 }
 
 /* --------------------------------------------------------
@@ -129,28 +78,57 @@ const handleStudied = () => {
 
 .flashcard {
   position: relative;
-  width: 320px;
-  height: 200px;
+  width: 400px;
+  height: 260px;
   cursor: pointer;
   perspective: 1200px;
   transition: transform var(--duration-base) var(--ease-out);
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   will-change: transform;
 }
 
 /* 懸浮效果 - 戰神風格 */
 .flashcard:hover {
   transform: translateY(-8px);
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.8));
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 
-/* 已學習狀態 */
+/* 已學習狀態 - 綠色發光邊框 */
 .flashcard.is-studied {
-  filter: drop-shadow(0 10px 30px rgba(106, 176, 76, 0.4));
+  box-shadow: 0 10px 30px rgba(106, 176, 76, 0.5);
 }
 
 .flashcard.is-studied:hover {
-  filter: drop-shadow(0 20px 40px rgba(106, 176, 76, 0.6));
+  box-shadow: 0 20px 40px rgba(106, 176, 76, 0.7);
+}
+
+.flashcard.is-studied .flashcard-face {
+  border-color: rgba(106, 176, 76, 0.8);
+  box-shadow: 
+    var(--shadow-lg),
+    0 0 20px rgba(106, 176, 76, 0.3),
+    inset 0 0 20px rgba(106, 176, 76, 0.1);
+}
+
+.flashcard.is-studied .flashcard-front {
+  border-color: rgba(106, 176, 76, 0.8);
+}
+
+.flashcard.is-studied .flashcard-back {
+  border-color: rgba(106, 176, 76, 0.9);
+}
+
+/* 符文角落裝飾 - 已學習狀態變綠色 */
+.flashcard.is-studied .flashcard-face::before {
+  border-top-color: rgba(106, 176, 76, 0.8);
+  border-left-color: rgba(106, 176, 76, 0.8);
+  opacity: 0.9;
+}
+
+.flashcard.is-studied .flashcard-face::after {
+  border-bottom-color: rgba(106, 176, 76, 0.8);
+  border-right-color: rgba(106, 176, 76, 0.8);
+  opacity: 0.9;
 }
 
 /* Focus State */
@@ -267,7 +245,7 @@ const handleStudied = () => {
 }
 
 .korean-text {
-  font-size: var(--text-3xl);
+  font-size: var(--text-4xl);
   font-family: var(--font-display);
   font-weight: var(--font-bold);
   color: var(--color-text-primary);
@@ -276,133 +254,34 @@ const handleStudied = () => {
 }
 
 .chinese-text {
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   font-family: var(--font-display);
   font-weight: var(--font-semibold);
   color: var(--color-text-primary);
   line-height: 1.3;
 }
 
-/* --------------------------------------------------------
-   Audio Button - 戰神風格脈衝效果
-   -------------------------------------------------------- */
-
-.audio-button {
-  position: absolute;
-  top: var(--space-5);
-  right: var(--space-5);
-  z-index: 10;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  background: var(--gradient-accent);
-  color: var(--color-text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-base) var(--ease-out);
-  overflow: visible;
-  border: 2px solid var(--color-accent-dark);
-  will-change: transform;
+/* 例句區域 */
+.example-section {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(159, 197, 232, 0.3);
+  width: 100%;
 }
 
-.audio-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-accent);
-  border-color: var(--color-accent-light);
-}
-
-.audio-button:active {
-  transform: translateY(0);
-}
-
-.audio-button:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.audio-icon {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-/* 脈衝波紋動畫 - 戰神風格 */
-.ripple {
-  position: absolute;
-  inset: -6px;
-  border-radius: var(--radius-sm);
-  border: 2px solid var(--color-accent);
-  opacity: 0.6;
-  animation: ripplePulse 2s var(--ease-in-out) infinite;
-  pointer-events: none;
-}
-
-@keyframes ripplePulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.3);
-    opacity: 0;
-  }
-}
-
-/* --------------------------------------------------------
-   Study Button - 戰神風格成功按鈕
-   -------------------------------------------------------- */
-
-.study-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-8);
-  background: linear-gradient(135deg, var(--color-success) 0%, #5a9a3a 100%);
-  color: var(--color-text-primary);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-base);
+.example-text {
+  font-size: var(--text-sm);
   font-family: var(--font-display);
-  font-weight: var(--font-semibold);
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-base) var(--ease-out);
-  border: 2px solid #5a9a3a;
-  letter-spacing: 0.02em;
-  will-change: transform;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  margin-bottom: var(--space-2);
 }
 
-.study-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-success);
-}
-
-.study-button:active {
-  transform: translateY(0);
-}
-
-.study-button:focus-visible {
-  outline: 2px solid var(--color-success);
-  outline-offset: 2px;
-}
-
-.study-button.is-studied {
-  background: linear-gradient(135deg, #5a9a3a 0%, #4a7a2a 100%);
-  border-color: #4a7a2a;
-  opacity: 0.8;
-}
-
-.study-button.is-studied:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-}
-
-.check-icon {
-  width: 20px;
-  height: 20px;
+.example-translation {
+  font-size: var(--text-xs);
+  font-family: var(--font-display);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
 }
 
 /* --------------------------------------------------------
@@ -411,14 +290,8 @@ const handleStudied = () => {
 
 @media (prefers-reduced-motion: reduce) {
   .flashcard,
-  .flashcard-inner,
-  .audio-button,
-  .study-button {
+  .flashcard-inner {
     transition-duration: 0.01ms;
-  }
-
-  .ripple {
-    animation: none;
   }
 
   .flashcard:hover {
@@ -427,16 +300,9 @@ const handleStudied = () => {
 }
 
 @media (hover: none) {
-  .flashcard:hover,
-  .audio-button:hover,
-  .study-button:hover {
+  .flashcard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
-  }
-
-  .audio-button:hover::before,
-  .study-button:hover::before {
-    opacity: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   }
 }
 </style>

@@ -1,17 +1,5 @@
 <template>
   <div class="memory-game">
-    <!-- Game Stats -->
-    <div class="game-stats">
-      <div class="stat-item">
-        <span class="stat-label">移動次數</span>
-        <span class="stat-value">{{ moves }}</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">配對成功</span>
-        <span class="stat-value">{{ matchedPairs.length }} / {{ totalPairs }}</span>
-      </div>
-    </div>
-
     <!-- Game Grid -->
     <div 
       class="game-grid" 
@@ -22,6 +10,7 @@
       <button
         v-for="card in shuffledCards"
         :key="card.id"
+        v-memo="[card.id, card.isFlipped, card.isMatched, isChecking && flippedCards.includes(card.id)]"
         class="memory-card"
         :class="{
           'is-flipped': card.isFlipped,
@@ -61,7 +50,7 @@
       <div v-if="gameCompleted" class="celebration-overlay" role="alert" aria-live="polite">
         <div class="celebration-content">
           <div class="confetti-container" aria-hidden="true">
-            <div v-for="i in 50" :key="i" class="confetti" :style="getConfettiStyle(i)"></div>
+            <div v-for="i in 20" :key="i" class="confetti" :style="getConfettiStyle(i)"></div>
           </div>
           <h2 class="celebration-title">🎉 恭喜完成！</h2>
           <p class="celebration-message">你用了 {{ moves }} 步完成遊戲</p>
@@ -103,6 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
 interface Emits {
   (e: 'game-complete', moves: number): void;
   (e: 'move-made', moves: number): void;
+  (e: 'matched-pairs-update', count: number): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -163,6 +153,9 @@ const initializeGame = () => {
   moves.value = 0;
   isChecking.value = false;
   gameCompleted.value = false;
+  
+  // Emit initial matched pairs count
+  emit('matched-pairs-update', 0);
 };
 
 // Shuffle array using Fisher-Yates algorithm
@@ -229,6 +222,9 @@ const checkMatch = () => {
       currentFirstCard.isMatched = true;
       currentSecondCard.isMatched = true;
       matchedPairs.value.push(currentFirstCard.pairId);
+      
+      // Emit matched pairs count update
+      emit('matched-pairs-update', matchedPairs.value.length);
       
       // Check if game is completed
       if (matchedPairs.value.length === totalPairs.value) {
@@ -375,8 +371,10 @@ onBeforeUnmount(() => {
 
 .game-grid {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
   width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 /* Grid sizes */
@@ -401,22 +399,9 @@ onBeforeUnmount(() => {
     gap: var(--space-6);
   }
 
-  .game-stats {
-    gap: var(--space-4);
-    padding: var(--space-3) var(--space-6);
-    flex-wrap: wrap;
-  }
-
-  .stat-label {
-    font-size: 0.625rem;
-  }
-
-  .stat-value {
-    font-size: var(--text-xl);
-  }
-
   .game-grid {
     gap: var(--space-2);
+    max-width: 100%;
   }
   
   .grid-small,
@@ -425,8 +410,16 @@ onBeforeUnmount(() => {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .card-content {
+  .card-content.text-korean {
+    font-size: var(--text-xl);
+  }
+
+  .card-content.text-chinese {
     font-size: var(--text-base);
+  }
+
+  .cover-headline {
+    font-size: 0.625rem;
   }
 
   .celebration-content {
@@ -447,11 +440,12 @@ onBeforeUnmount(() => {
 /* Tablet (641px - 1023px) */
 @media (min-width: 641px) and (max-width: 1023px) {
   .memory-game {
-    max-width: 700px;
+    max-width: 550px;
   }
 
   .game-grid {
     gap: var(--space-3);
+    max-width: 500px;
   }
 
   .grid-small {
@@ -462,6 +456,14 @@ onBeforeUnmount(() => {
   .grid-large {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  .card-content.text-korean {
+    font-size: var(--text-2xl);
+  }
+
+  .card-content.text-chinese {
+    font-size: var(--text-lg);
+  }
 }
 
 /* Desktop (≥1024px) */
@@ -469,20 +471,12 @@ onBeforeUnmount(() => {
   .memory-game {
     padding: var(--space-8);
     gap: var(--space-10);
-    max-width: 900px;
-  }
-
-  .game-stats {
-    gap: var(--space-12);
-    padding: var(--space-5) var(--space-10);
-  }
-
-  .stat-value {
-    font-size: var(--text-3xl);
+    max-width: 650px;
   }
 
   .game-grid {
-    gap: var(--space-5);
+    gap: var(--space-4);
+    max-width: 600px;
   }
 
   .grid-small,
@@ -491,8 +485,12 @@ onBeforeUnmount(() => {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .card-content {
-    font-size: var(--text-2xl);
+  .card-content.text-korean {
+    font-size: var(--text-3xl);
+  }
+
+  .card-content.text-chinese {
+    font-size: var(--text-xl);
   }
 }
 
@@ -512,7 +510,15 @@ onBeforeUnmount(() => {
 }
 
 .memory-card:hover:not(:disabled) {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+}
+
+.memory-card:hover:not(:disabled) .card-back {
+  border-color: var(--color-primary);
+  box-shadow: 
+    inset 0 0 20px rgba(159, 197, 232, 0.05),
+    0 6px 16px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(159, 197, 232, 0.2);
 }
 
 .memory-card:disabled {
@@ -534,7 +540,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 400ms var(--ease-epic);
+  transition: transform 350ms var(--ease-epic);
 }
 
 .memory-card.is-flipped .card-inner,
@@ -562,36 +568,34 @@ onBeforeUnmount(() => {
 }
 
 .card-back {
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  background: linear-gradient(135deg, #1a1d23 0%, #0d0f12 100%);
+  border: 2px solid rgba(159, 197, 232, 0.3);
   transform: rotateY(0deg);
+  box-shadow: 
+    inset 0 0 20px rgba(159, 197, 232, 0.03),
+    0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .card-front {
-  background: linear-gradient(135deg, 
-    #f8f9fa 0%, 
-    #ffffff 50%,
-    #f8f9fa 100%
-  );
-  border: 3px solid var(--color-primary);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2px solid var(--color-primary);
   transform: rotateY(180deg);
   box-shadow: 
-    inset 0 2px 8px rgba(111, 168, 220, 0.15),
     0 8px 24px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(111, 168, 220, 0.2);
+    0 0 20px rgba(159, 197, 232, 0.2);
   position: relative;
   overflow: hidden;
 }
 
-/* 添加符文角落裝飾到翻轉後的卡片 */
+/* 簡潔的角落裝飾 */
 .card-front::before,
 .card-front::after {
   content: '';
   position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--color-primary);
-  opacity: 0.8;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--color-primary);
+  opacity: 0.6;
 }
 
 .card-front::before {
@@ -609,105 +613,45 @@ onBeforeUnmount(() => {
 }
 
 /* --------------------------------------------------------
-   Nordic Geometric Pattern (Card Back) - 戰神風格
+   Minimalist Card Back - 戰神風格
    -------------------------------------------------------- */
 
 .magazine-cover {
   width: 100%;
   height: 100%;
   border-radius: var(--radius-sm);
-  background: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 12px,
-      rgba(159, 197, 232, 0.15) 12px,
-      rgba(159, 197, 232, 0.15) 24px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 12px,
-      rgba(193, 68, 14, 0.1) 12px,
-      rgba(193, 68, 14, 0.1) 24px
-    ),
-    linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-elevated) 100%);
+  background: linear-gradient(135deg, #1a1d23 0%, #0d0f12 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
   position: relative;
+  overflow: hidden;
 }
 
-/* 四角裝飾 - 符文風格 */
-.magazine-cover::before,
+/* 中央符文 */
 .magazine-cover::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--color-primary-dark);
-}
-
-.magazine-cover::before {
-  top: var(--space-2);
-  left: var(--space-2);
-  border-right: none;
-  border-bottom: none;
-}
-
-.magazine-cover::after {
-  bottom: var(--space-2);
-  right: var(--space-2);
-  border-left: none;
-  border-top: none;
+  content: '◈';
+  font-size: var(--text-5xl);
+  color: var(--color-primary);
+  opacity: 0.2;
+  text-shadow: 0 0 20px rgba(159, 197, 232, 0.3);
 }
 
 .cover-headline {
-  font-family: var(--font-display);
-  font-size: var(--text-xs);
-  letter-spacing: 0.2em;
-  font-weight: var(--font-bold);
-  color: var(--color-primary);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  display: none;
 }
 
 .cover-subtitle {
-  font-size: 0.5rem;
-  letter-spacing: 0.1em;
-  color: var(--color-text-secondary);
-  opacity: 0.7;
+  display: none;
 }
 
 .korean-pattern {
-  width: 60%;
-  height: 40%;
-  background-image: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 8px,
-      rgba(159, 197, 232, 0.2) 8px,
-      rgba(159, 197, 232, 0.2) 10px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 8px,
-      rgba(159, 197, 232, 0.2) 8px,
-      rgba(159, 197, 232, 0.2) 10px
-    );
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  display: none;
 }
 
 .cover-issue {
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 0.15em;
-  color: var(--color-text-tertiary);
-  opacity: 0.6;
+  display: none;
 }
 
 /* --------------------------------------------------------
@@ -716,34 +660,28 @@ onBeforeUnmount(() => {
 
 .card-content {
   font-size: var(--text-2xl);
-  font-weight: var(--font-black);
+  font-weight: var(--font-bold);
   color: #1a1d24;
   text-align: center;
   word-break: break-word;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  line-height: 1.3;
   position: relative;
   z-index: 1;
-  padding: var(--space-3);
+  padding: var(--space-4);
 }
 
 .card-content.text-korean {
   font-family: var(--font-korean);
-  color: #2e5984;
-  font-size: var(--text-4xl);
+  color: var(--color-primary-dark);
+  font-size: var(--text-3xl);
   font-weight: var(--font-black);
-  text-shadow: 
-    0 2px 4px rgba(255, 255, 255, 0.9),
-    0 0 20px rgba(46, 89, 132, 0.3);
 }
 
 .card-content.text-chinese {
   font-family: var(--font-chinese);
-  color: #1a1d24;
-  font-size: var(--text-2xl);
-  font-weight: var(--font-bold);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+  color: #2a2d35;
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
 }
 
 /* --------------------------------------------------------
@@ -756,18 +694,18 @@ onBeforeUnmount(() => {
 
 .memory-card.is-matched .card-front {
   box-shadow: 
-    0 0 20px rgba(159, 197, 232, 0.6),
-    0 0 40px rgba(159, 197, 232, 0.4),
-    var(--shadow-lg);
-  animation: frostGlowPulse 1.5s var(--ease-in-out) infinite;
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(159, 197, 232, 0.6);
+  animation: frostGlowPulse 2s var(--ease-in-out) infinite;
+  border-color: var(--color-primary-light);
 }
 
 @keyframes matchSuccess {
   0% {
     transform: rotateY(180deg) scale(1);
   }
-  50% {
-    transform: rotateY(180deg) scale(1.08);
+  40% {
+    transform: rotateY(180deg) scale(1.05);
   }
   100% {
     transform: rotateY(180deg) scale(1);
@@ -777,15 +715,13 @@ onBeforeUnmount(() => {
 @keyframes frostGlowPulse {
   0%, 100% {
     box-shadow: 
-      0 0 20px rgba(159, 197, 232, 0.6),
-      0 0 40px rgba(159, 197, 232, 0.4),
-      var(--shadow-lg);
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(159, 197, 232, 0.6);
   }
   50% {
     box-shadow: 
-      0 0 30px rgba(159, 197, 232, 0.8),
-      0 0 60px rgba(159, 197, 232, 0.5),
-      var(--shadow-lg);
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      0 0 35px rgba(159, 197, 232, 0.8);
   }
 }
 
