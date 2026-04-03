@@ -19,6 +19,8 @@
 
 [點擊這裡查看 Demo](https://nycu-hw-sky.github.io/hangeul-master/)
 
+> 每次推送到 main 分支時，會自動構建並部署到 GitHub Pages
+
 ## 📦 技術棧
 
 - **框架**：Vue 3 (Composition API)
@@ -51,7 +53,7 @@ bun run build
 
 構建後會在 `dist` 目錄生成單一的 `index.html` 文件和 `audio` 資料夾。
 
-## 📁 專案結構
+## 專案結構
 
 ```
 hangeul-master/
@@ -71,11 +73,6 @@ hangeul-master/
 │   ├── services/       # 服務層
 │   ├── types/          # TypeScript 類型定義
 │   └── utils/          # 工具函數
-├── public/
-│   └── audio/          # 音訊文件
-└── dist/               # 構建輸出
-    ├── index.html      # 單一 HTML 文件
-    └── audio/          # 音訊資料夾
 ```
 
 ## 🎨 功能說明
@@ -134,10 +131,6 @@ hangeul-master/
 - LocalStorage 持久化學習進度
 - 組件化架構，易於維護和擴展
 
-## 📄 授權
-
-MIT License
-
 ## 👤 作者
 
 NYCU-HW-SKY
@@ -146,4 +139,3 @@ NYCU-HW-SKY
 
 **課程**：生成式 AI 的人文導論  
 **作業**：有聲單字卡 Demo  
-**學期**：2024-2025
